@@ -21,6 +21,7 @@ create table portfolio_shares(
     share int,
     anteile int,
     einstandskurs float,
+    UNIQUE(portfolio,share),
     FOREIGN key (share) references shares(id),
     foreign key (portfolio) references portfolio(id)
 );	
@@ -50,3 +51,6 @@ insert into shares (name, identifier) values ("BP","BP" );
 
 insert into portfolio (name, aktuelles_kapital, startkapital) values ("alles", 10000, 10000 );
 
+
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (1,1,10,200);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (1,2,5,100);

@@ -122,7 +122,7 @@ insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (
 
 
 insert into user (firstname, lastname, mail) values ('Maximilian', 'Ludwig', 'maxludwig23@t-online.de');
-insert into portfolio (name, aktuelles_kapital, startkapital) values ('Max Portfolio', '977,23', '2500');
+insert into portfolio (name, aktuelles_kapital, startkapital) values ('Max Portfolio', '1321.82', '2800');
 insert into user_portfolio (portfolio, user) values (2,1);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,1,1,'186.93');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,2,5,'38.66');
@@ -132,13 +132,32 @@ insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,8,40,'2.79');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,9,38,'3.48');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,10,2,'61.31');
-insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,11,2,'20.20');
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,11,0,'0.0');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,12,3,'9.38');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,13,49,'0.600');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,15,4,'60.59');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,21,4,'20.59');
 
 
-
-
-
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,3,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,5,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,14,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,16,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,17,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,18,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,19,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,20,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,22,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,23,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,24,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,25,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,26,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,27,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,28,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,29,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,30,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,31,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,32,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,33,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,34,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,35,0,0);

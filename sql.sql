@@ -83,6 +83,40 @@ insert into shares (name, identifier) values ("Kraft-Heinz","KHNZ.DE" );
 insert into shares (name, identifier) values ("Nike","NKE.DE" );
 insert into shares (name, identifier) values ("Infineon","IFX.DE" );
 
+
+insert into shares (name, identifier) values ("British American Tobaco","BMT.DE" );
+insert into shares (name, identifier) values ("VW","VWAGY" );
+insert into shares (name, identifier) values ("Daimler","DAI.DE" );
+insert into shares (name, identifier) values ("General Electric","GEC.DE" );
+insert into shares (name, identifier) values ("TUI","TUI1.DE" );
+insert into shares (name, identifier) values ("Delta Airlines","OYC.DE" );
+insert into shares (name, identifier) values ("Deutsche Telekom","DTE.DE" );
+insert into shares (name, identifier) values ("Johnson and Johnson","JNJ.DE" );
+insert into shares (name, identifier) values ("Biontech","22UA.DE" );
+insert into shares (name, identifier) values ("Danone","BSN.F" );
+insert into shares (name, identifier) values ("Gartner","GGRA.F" );
+insert into shares (name, identifier) values ("Caterpillar","CAT1.F" );
+insert into shares (name, identifier) values ("Zalando","ZAL.DE" );
+insert into shares (name, identifier) values ("Oracle","ORC.F" );
+insert into shares (name, identifier) values ("Lanxess","LXS.DE" );
+insert into shares (name, identifier) values ("K + S","SDF.DE" );
+insert into shares (name, identifier) values ("Hornbach","HBH.DE" );
+insert into shares (name, identifier) values ("Carrefour","CAR.F" );
+insert into shares (name, identifier) values ("Kabel Deutschland","KD8.HM" );
+insert into shares (name, identifier) values ("Enel","ENL.F" );
+insert into shares (name, identifier) values ("JP Morgan","CMC.DE" );
+insert into shares (name, identifier) values ("HSBC","HBC1.F" );
+insert into shares (name, identifier) values ("RWE","RWE.DE" );
+insert into shares (name, identifier) values ("Novartis","NOT.F" );
+insert into shares (name, identifier) values ("Sanofi","SNW.F" );
+insert into shares (name, identifier) values ("Intel","INL.F" );
+insert into shares (name, identifier) values ("AT&T","SOBA.F" );
+insert into shares (name, identifier) values ("Telefonica","TNE5.F" );
+insert into shares (name, identifier) values ("Prosieben Sat1","PSM.DE" );
+insert into shares (name, identifier) values ("Pepsico","PEP.DE" );
+
+
+
 insert into portfolio (name, aktuelles_kapital, startkapital) values ("alles", 10000, 10000 );
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (1,1,0,0);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (1,2,0,0);
@@ -137,8 +171,6 @@ insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,13,49,'0.600');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,15,4,'60.59');
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,21,4,'20.59');
-
-
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,3,0,0);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,5,0,0);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,14,0,0);
@@ -161,3 +193,41 @@ insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,33,0,0);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,34,0,0);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (2,35,0,0);
+
+
+
+
+insert into portfolio (name, aktuelles_kapital, startkapital) values ("Test-Set", 10000, 10000 );
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,36,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,37,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,38,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,39,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,40,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,41,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,42,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,43,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,44,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,45,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,46,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,47,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,48,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,49,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,50,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,51,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,52,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,53,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,54,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,55,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,56,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,57,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,58,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,59,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,60,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,61,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,62,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,63,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,64,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,65,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,66,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,67,0,0);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs) values (3,68,0,0);

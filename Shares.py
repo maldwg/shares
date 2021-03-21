@@ -1064,7 +1064,7 @@ def weighted_merge_perm(permutation, stocks, names):
 def decide_perm(permutation, indicators):
     rating = 0
     indicator_count = 0
-    for x in range(sum(permutation)):
+    for x in range(len(permutation)):
         if indicators[x] == "buy":
             rating+=permutation[x]
         if indicators[x] == "sell":

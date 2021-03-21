@@ -1109,7 +1109,7 @@ def print_all(stocks, names):
 
 
 def initialize_stocks(days):
-    stock_array=get_stocks_from_portfolio("Test-Set")
+    stock_array=get_stocks_from_portfolio("alles")
     stocks=[]
     names=[]
     for stock in stock_array:
@@ -1157,8 +1157,9 @@ def init(portfolio, stocks, names):
 
 
 import time 
+cleanup()
 stocks, names= initialize_stocks("200d")
-max_stocks, max_names = init("Test-Set", stocks, names)
+max_stocks, max_names = init("alles", stocks, names)
 
 permutations=[]
 for a in range(0,2):
@@ -1183,7 +1184,7 @@ for perm in permutations:
         continue
     summe = sum(perm)
     weighted_merge_perm(perm, max_stocks, max_names)
-    gesamt = evaluate_model_weighted_perm(summe,"Test-Set", max_stocks, max_names)
+    gesamt = evaluate_model_weighted_perm(summe,"alles", max_stocks, max_names)
     list.append([perm,gesamt])
     end = time.time()
     print(end - start)

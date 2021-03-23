@@ -33,6 +33,7 @@ def get_smas(stocks, names, period):
 # Methode zum bewerten der SMA Ergebnisse 
 def add_buy_and_sell_sma(stocks):
     for stock in stocks:
+        stock.dropna(subset = ["close"], inplace=True)
         # variable um den allgemeinen trend zu erfragen (hold, buy, sell)
         trend = [] 
         # Alle Tage an denen gebuyt wird werden mit dem Aktienkurs aufgefüllt, sonst nan
@@ -43,6 +44,7 @@ def add_buy_and_sell_sma(stocks):
         days_signal_persists = 0
         for day in stock.index:
             # wenn undefinierte Werte erscheinen machen wir nichts
+            print(stock["SMA"][day])
             if math.isnan(stock["SMA"][day]): 
                 helper_buy.append(np.nan)
                 helper_sell.append(np.nan)
@@ -1157,7 +1159,7 @@ def init(portfolio, stocks, names):
 
 
 import time 
-cleanup()
+#cleanup()
 stocks, names= initialize_stocks("200d")
 max_stocks, max_names = init("alles", stocks, names)
 

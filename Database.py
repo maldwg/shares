@@ -223,8 +223,8 @@ def remove_share(share):
 
 def cleanup():
     conn,sql = init_db_connection()
-    sql.execute("update portfolio_shares set einstandskurs=0.0, anteile=0 where portfolio=1")
-    sql.execute("update portfolio set startkapital=2500.0, aktuelles_kapital=2500.0 where id=1")
+    sql.execute("update portfolio_shares set einstandskurs=0.0, anteile=0 where portfolio=1 or portfolio=3")
+    sql.execute("update portfolio set startkapital=2500.0, aktuelles_kapital=2500.0 where id=1 or id=3")
     conn.commit()
     close_db_connection(conn,sql)
     return True

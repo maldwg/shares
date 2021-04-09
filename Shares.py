@@ -44,7 +44,6 @@ def add_buy_and_sell_sma(stocks):
         days_signal_persists = 0
         for day in stock.index:
             # wenn undefinierte Werte erscheinen machen wir nichts
-            print(stock["SMA"][day])
             if math.isnan(stock["SMA"][day]): 
                 helper_buy.append(np.nan)
                 helper_sell.append(np.nan)
@@ -1157,6 +1156,12 @@ def init(portfolio, stocks, names):
 
 # In[42]:
 
+import logging
+from systemd.journal import JournalHandler
+
+log = logging.getLogger('demo')
+log.addHandler(JournalHandler())
+log.setLevel(logging.INFO)
 
 import time 
 #cleanup()
@@ -1181,6 +1186,7 @@ list = []
 max_gesamt=0
 
 for perm in permutations:
+    log.info("----------------------- "+str(counter/length)+" % -----------------------------")
     if sum(perm) <= 2:
         print("continue")
         continue
@@ -1194,6 +1200,7 @@ for perm in permutations:
     cleanup()
     time.sleep(1.5)
     if gesamt > max_gesamt:
+        log.info("Permutation "+str(perm)+" ist besser ------ "+str(gesamt))
         print("Permutation "+str(perm)+" ist besser ------ "+str(gesamt))
         max_gesamt=gesamt
         

@@ -404,7 +404,7 @@ def sell(portfolio, Aktie, prozent_aktie, value):
     aktien_to_sell = round(prozent_aktie*anzahl)
     if aktien_to_sell < 0:
         aktien_to_sell = 1
-    sell_stock(portfolio, Aktie, value, anzahl)
+    sell_stock(portfolio, Aktie, value, aktien_to_sell)
     time.sleep(0.1)
         
 def contains(signal_aktien, weight):

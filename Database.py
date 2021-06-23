@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import sqlite3
 
 
-# In[1]:
+# In[8]:
 
 
 ############################################
@@ -31,7 +31,15 @@ def get_stocks_from_portfolio(portfolio):
     close_db_connection(conn, sql)
     return results    
 
-    
+  
+def get_ammount_and_price_by_name(portfolio,stock):
+    conn,sql = init_db_connection()
+    portfolio_id = get_portfolio_id(portfolio)
+    stock_id = get_stock_id(stock)
+    sql.execute("Select anteile, einstandskurs from portfolio_shares where portfolio="+str(portfolio_id)+" and share ="+str(stock_id))
+    ammount,price=sql.fetchone()
+    close_db_connection(conn,sql)
+    return ammount,price
     
 def get_ammount_and_price(portfolio_id,stock_id):
     conn,sql = init_db_connection()
@@ -71,6 +79,9 @@ def get_portfolio_id(portfolio):
 # relevant methods to call
 
 def buy_stock(portfolio, stock, price, ammount): # portfolio and stock = names, price = closing value, ammount = ammount
+    # ensure types are correct
+    price=float(price)
+    ammount=float(ammount)
     conn,sql = init_db_connection()
     portfolio_id = get_portfolio_id(portfolio)
     stock_id = get_stock_id(stock)
@@ -78,7 +89,7 @@ def buy_stock(portfolio, stock, price, ammount): # portfolio and stock = names, 
     old_stocks, old_price=get_ammount_and_price(portfolio_id,stock_id)
     new_stocks=old_stocks+ammount
     new_price=(old_price*old_stocks+price*ammount)/new_stocks # neuer einstandskurs anteilig errechnet
-    sql.execute("update portfolio_shares set anteile="+str(new_stocks)+", einstandskurs="+str(new_price)+" where id ="+str(portfolio_stock_id))   
+    sql.execute("update portfolio_shares set anteile="+str(new_stocks)+", einstandskurs="+str(new_price)+", last_bought=0 where id ="+str(portfolio_stock_id))   
     conn.commit()
     kapital=get_kapital(portfolio)
     new_kapital=kapital-price*ammount
@@ -89,13 +100,15 @@ def buy_stock(portfolio, stock, price, ammount): # portfolio and stock = names, 
     # ernidrige kapital!
     
 def sell_stock(portfolio, stock, price, ammount): # portfolio and stock = names, price = closing value, ammount = ammount
+    price=float(price)
+    ammount=float(ammount)
     conn,sql = init_db_connection()
     portfolio_id = get_portfolio_id(portfolio)
     stock_id = get_stock_id(stock)
     portfolio_stock_id=get_portfolio_share_id(portfolio,stock)
     old_stocks, old_price=get_ammount_and_price(portfolio_id,stock_id)
     new_stocks=old_stocks-ammount
-    sql.execute("update portfolio_shares set anteile="+str(new_stocks)+" where id ="+str(portfolio_stock_id))   
+    sql.execute("update portfolio_shares set anteile="+str(new_stocks)+", last_sold=0 where id ="+str(portfolio_stock_id))   
     conn.commit()
     gewinn = (price-old_price)*ammount
     #print("Es wurden "+str(ammount)+" " + stock + " Aktien verkauft")
@@ -131,7 +144,23 @@ def get_anzahl(portfolio,stock): # portfolio and stock = names,
     sql.execute("select anteile from portfolio_shares where id ="+str(portfolio_stock_id))
     kapital=sql.fetchone()[0]
     close_db_connection(conn,sql)
-    return kapital    
+    return kapital  
+
+def get_last_sell(portfolio,stock):
+    conn,sql = init_db_connection()
+    portfolio_stock_id=get_portfolio_share_id(portfolio,stock)
+    sql.execute("select last_sold from portfolio_shares where id ="+str(portfolio_stock_id))
+    days=sql.fetchone()[0]
+    close_db_connection(conn,sql)
+    return days 
+
+def get_last_buy(portfolio,stock):
+    conn,sql = init_db_connection()
+    portfolio_stock_id=get_portfolio_share_id(portfolio,stock)
+    sql.execute("select last_bought from portfolio_shares where id ="+str(portfolio_stock_id))
+    days=sql.fetchone()[0]
+    close_db_connection(conn,sql)
+    return days 
 
 def get_einstandskurs(portfolio,stock): # portfolio and stock = names,
     conn,sql = init_db_connection()
@@ -179,7 +208,7 @@ def increase_kapital(portfolio, increase):
     portfolio_id = get_portfolio_id(portfolio)
     new_kapital= get_kapital(portfolio)+increase
     new_startkapital= get_startkapital(portfolio)+increase
-    sql.execute("update portfolio set kapital="+str(new_kapital)+",startkapital="+str(new_startkapital)+" where id ="+str(portfolio_id))
+    sql.execute("update portfolio set aktuelles_kapital="+str(new_kapital)+",startkapital="+str(new_startkapital)+" where id ="+str(portfolio_id))
     conn.commit()
     close_db_connection(conn,sql)
     return True     
@@ -221,10 +250,52 @@ def remove_share(share):
     close_db_connection(conn,sql)
     return True 
 
+# function to set flags so that share is not traded on subsequent days
+def increment_trade_values(portfolio):
+    conn,sql = init_db_connection()
+    portfolio_id = get_portfolio_id(portfolio)
+    sql.execute("update portfolio_shares set last_bought=last_bought+1, last_sold=last_sold+1 where portfolio ="+str(portfolio_id))
+    conn.commit()
+    close_db_connection(conn,sql)
+    return True 
+
+def get_all_portfolios():
+    conn,sql = init_db_connection()
+    sql.execute("select name from portfolio")
+    portfolios=sql.fetchall()
+    helper=[]
+    for portfolio in portfolios:
+        helper.append(portfolio[0])
+    close_db_connection(conn,sql)
+    return helper  
+
+def get_email(portfolio):
+    conn,sql = init_db_connection()
+    portfolio_id = get_portfolio_id(portfolio)
+    sql.execute("select user from user_portfolio where portfolio ="+str(portfolio_id))
+    user_id=sql.fetchone()[0]
+    sql.execute("select mail from user where id ="+str(user_id))
+    mail=sql.fetchone()[0]
+    close_db_connection(conn,sql)
+    return mail        
+
+def get_portfolio_by_mail(email):
+    conn,sql = init_db_connection()
+    sql.execute("select id from user where mail='"+str(email)+"'")
+    user_id=sql.fetchone()[0]
+    sql.execute("select portfolio from user_portfolio where user="+str(user_id))
+    portfolio_id=sql.fetchone()[0]
+    sql.execute("select name from portfolio where id="+str(portfolio_id))
+    portfolio=sql.fetchone()[0]    
+    close_db_connection(conn,sql)
+    return portfolio            
+                
+
+
 def cleanup():
     conn,sql = init_db_connection()
-    sql.execute("update portfolio_shares set einstandskurs=0.0, anteile=0 where portfolio=1 or portfolio=3")
-    sql.execute("update portfolio set startkapital=2500.0, aktuelles_kapital=2500.0 where id=1 or id=3")
+    sql.execute("update portfolio_shares set einstandskurs=0.0, anteile=0, last_sold=0, last_bought=0 where portfolio=3 or portfolio=1 or portfolio=4")
+    sql.execute("update portfolio set startkapital=2500.0, aktuelles_kapital=2500.0 where id=1 or id=3 or id=4")
     conn.commit()
     close_db_connection(conn,sql)
     return True

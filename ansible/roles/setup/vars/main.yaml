@@ -1,0 +1,16 @@
+package_list:
+  - name: python3-pip
+  - name: git
+
+pip_moduels:
+  - name: pandas
+  - name: yfinance
+  - name: matplotlib
+  - name: technical_indicators_lib
+
+    sudo apt update -y
+sudo upgrade -y
+
+sudo apt install   -y
+
+pip3 install yfinance pandas matplotlib technical_indicators_lib

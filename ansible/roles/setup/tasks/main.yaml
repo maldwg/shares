@@ -1,0 +1,28 @@
+---
+
+- name: install neccessary packages
+  package:
+    name: "{{ item.name }}"
+    state: present
+  loop:
+    - "{{ package_list }}"
+
+- name: ensure path is existent
+  file:
+    path: /opt/shares
+    state: directory
+
+- name: fetch repository
+  command: git clone https://github.com/maldwg/shares.git /opt/shares
+
+- name: install neccessary pip modules
+  command: pip3 install {{ item.name }}
+  loop: 
+    - "{{ pip_modules }}"
+
+- name: add execution of script to startup
+  ansible.builtin.cron:
+    name: "start shares programm on reboot"
+    special_time: reboot
+    job: "python3 /opt/shares/main.py"
+  

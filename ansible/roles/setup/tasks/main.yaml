@@ -22,7 +22,7 @@
     repo: https://github.com/maldwg/shares.git
     dest: /opt/shares
     force: true
-    version: develop
+    version: main
   become: yes
 
 - name: install neccessary pip modules

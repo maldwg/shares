@@ -22,7 +22,7 @@
     repo: https://github.com/maldwg/shares.git
     dest: /opt/shares
     force: true
-    version: feature/add-permutations
+    version: develop
   become: yes
 
 - name: install neccessary pip modules

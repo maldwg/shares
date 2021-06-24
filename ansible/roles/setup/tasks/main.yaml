@@ -1,0 +1,43 @@
+---
+- name: create user
+  user:
+    name: shares
+
+- name: install neccessary packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ package_list }}"
+  become_user: "shares"
+
+- name: ensure path is existent
+  file:
+    path: /opt/shares
+    state: directory
+  become_user: "shares"
+
+- name: fetch repository
+  ansible.builtin.git:
+    repo: https://github.com/maldwg/shares.git
+    dest: /opt/shares
+    force: true
+    version: main
+  become: yes
+
+- name: install neccessary pip modules
+  command: pip3 install --user {{ item }}
+  with_items:
+    -  "pandas"
+    -  "yfinance"
+    -  "matplotlib"
+    -  "technical_indicators_lib"
+  become_user: "shares"
+
+- name: add execution of script to startup
+  ansible.builtin.cron:
+    name: "start shares programm on reboot"
+    special_time: reboot
+    job: "python3 /opt/shares/main.py >> /opt/shares/shares.log"
+    user: "shares"  
+    cron_file: /etc/crontab

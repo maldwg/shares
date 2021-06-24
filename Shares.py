@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[20]:
+# In[15]:
 
 
 import pandas as pd
@@ -12,11 +12,11 @@ import math
 import matplotlib.pyplot as plt
 from williamsR import *
 from Database import *
-from Fabian import *
+from analyzing_algorithms import *
 from operator import itemgetter
 
 
-# In[21]:
+# In[16]:
 
 
 # Simple Average Movement 
@@ -33,6 +33,7 @@ def get_smas(stocks, names, period):
 # Methode zum bewerten der SMA Ergebnisse 
 def add_buy_and_sell_sma(stocks):
     for stock in stocks:
+        stock.dropna(subset = ["close"], inplace=True)
         # variable um den allgemeinen trend zu erfragen (hold, buy, sell)
         trend = [] 
         # Alle Tage an denen gebuyt wird werden mit dem Aktienkurs aufgefüllt, sonst nan
@@ -55,15 +56,15 @@ def add_buy_and_sell_sma(stocks):
                         # Das signal besteht zum 0ten Tag
                         days_signal_persists = 0
                         # Keine Aussagekraft, daher ein hold
-                        helper_buy.append(stock["close"][day])
+                        helper_buy.append(np.nan)
                         helper_sell.append(np.nan)
-                        trend.append("buy")
+                        trend.append("hold")
                         flag = 1
                     else:
                         # wenn wir vorher schon im Buy waren, wird tage an dem signal besteht erhöht
                         days_signal_persists+=1
                         # wenn wir lange genug ein Signal haben kaufen wir
-                        if days_signal_persists <= 1:# and days_signal_persists <= 7):
+                        if days_signal_persists >= 1:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -79,13 +80,13 @@ def add_buy_and_sell_sma(stocks):
                         # Zurücksetzen des Counters, und hold als Wert zuweisen
                         days_signal_persists=0
                         helper_buy.append(np.nan)
-                        helper_sell.append(stock["close"][day])
-                        trend.append("sell")
+                        helper_sell.append(np.nan)
+                        trend.append("hold")
                         flag = 0
                     else:
                         # wenn das signal lange genug besteht, verkaufen wir
                         days_signal_persists+=1
-                        if days_signal_persists <= 1: #nd days_signal_persists <= 7): 
+                        if days_signal_persists >= 1: 
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -115,7 +116,7 @@ def print_smas(stocks, names):
         counter+=1
 
 
-# In[22]:
+# In[17]:
 
 
 def get_sma_ema(stocks, names, period):
@@ -142,15 +143,15 @@ def get_sma_ema(stocks, names, period):
                         # Das signal besteht zum 0ten Tag
                         days_signal_persists = 0
                         # Keine Aussagekraft, daher ein hold
-                        helper_buy.append(stock["close"][day])
+                        helper_buy.append(np.nan)
                         helper_sell.append(np.nan)
-                        trend.append("buy")
+                        trend.append("hold")
                         flag = 1
                     else:
                         # wenn wir vorher schon im Buy waren, wird tage an dem signal besteht erhöht
                         days_signal_persists+=1
                         # wenn wir lange genug ein Signal haben kaufen wir
-                        if days_signal_persists <= 2:# and days_signal_persists <= 7):
+                        if days_signal_persists >= 2:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -166,13 +167,13 @@ def get_sma_ema(stocks, names, period):
                         # Zurücksetzen des Counters, und hold als Wert zuweisen
                         days_signal_persists=0
                         helper_buy.append(np.nan)
-                        helper_sell.append(stock["close"][day])
-                        trend.append("sell")
+                        helper_sell.append(np.nan)
+                        trend.append("hold")
                         flag = 0
                     else:
                         # wenn das signal lange genug besteht, verkaufen wir
                         days_signal_persists+=1
-                        if days_signal_persists <= 2:# and days_signal_persists <= 7): 
+                        if days_signal_persists >= 2: 
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -186,22 +187,22 @@ def get_sma_ema(stocks, names, period):
         stock["sma_ema_sell"] = helper_sell
         stock["sma_ema_trend"] = trend
         
-    #counter = 0
-    #for stock in stocks:
-    #    fig, ax = plt.subplots(figsize=(15,10))  # Create a figure and an axes.
-    #    ax.plot(stock["close"], label="close")  # Plot some data on the axes.
-    #    ax.plot(stock["sma_ema_buy"], label="buy", marker=10, color="g")
-    #    ax.plot(stock["sma_ema_sell"], label="sell", marker=11, color="r")
-    #    ax.plot(stock["SMA"], label="sma", color="y")
-    #    ax.plot(stock["EMA"], label="ema", color="b")
-    #    ax.set_xlabel('Time')  # Add an x-label to the axes.
-    #    ax.set_ylabel('Value')  # Add a y-label to the axes.
-    #    ax.set_title("SMA and EMA of "+names[counter])  # Add a title to the axes.
+   # counter = 0
+   # for stock in stocks:
+   #     fig, ax = plt.subplots(figsize=(15,10))  # Create a figure and an axes.
+   #     ax.plot(stock["close"], label="close")  # Plot some data on the axes.
+   #     ax.plot(stock["sma_ema_buy"], label="buy", marker=10, color="g")
+   #     ax.plot(stock["sma_ema_sell"], label="sell", marker=11, color="r")
+   #     ax.plot(stock["SMA"], label="sma", color="y")
+   #     ax.plot(stock["EMA"], label="ema", color="b")
+   #     ax.set_xlabel('Time')  # Add an x-label to the axes.
+   #     ax.set_ylabel('Value')  # Add a y-label to the axes.
+   ##     ax.set_title("SMA and EMA of "+names[counter])  # Add a title to the axes.
     #    ax.legend()  # Add a legend.
     #    counter+=1
 
 
-# In[23]:
+# In[18]:
 
 
 # WilliamsR
@@ -236,7 +237,7 @@ def add_buy_and_sell_wr(stocks):
                         trend.append("hold")
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 3 and days_signal_persists < 7:
+                        if days_signal_persists >= 2 and days_signal_persists < 7:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -253,7 +254,7 @@ def add_buy_and_sell_wr(stocks):
                         flag = 0
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 3 and days_signal_persists < 7:
+                        if days_signal_persists >= 2 and days_signal_persists < 7:
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -287,7 +288,7 @@ def print_wr(stocks, names):
         counter+=1
 
 
-# In[24]:
+# In[19]:
 
 
 # Relative Strength Index
@@ -322,7 +323,7 @@ def add_buy_and_sell_rsi(stocks):
                         trend.append("hold")
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 3:
+                        if days_signal_persists >= 2 and days_signal_persists < 7:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -339,7 +340,7 @@ def add_buy_and_sell_rsi(stocks):
                         flag = 0
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 3:
+                        if days_signal_persists >= 2 and days_signal_persists < 7:
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -373,7 +374,7 @@ def print_rsi(stocks, names):
         counter+=1
 
 
-# In[25]:
+# In[20]:
 
 
 # MACD
@@ -403,16 +404,16 @@ def add_buy_and_sell_macd(stocks):
                     if (stock["MACD"][day] <= stock["MACD_signal_line"][day]):
                         if flag == 1:
                             days_signal_persists=0
-                            helper_sell.append(stock["close"][day])
+                            helper_sell.append(np.nan)
                             helper_buy.append(np.nan)
-                            trend.append("sell")
+                            trend.append("hold")
                             flag = 0
                         else:
                             days_signal_persists+=1
-                            if days_signal_persists >= 1 and days_signal_persists < 5:
+                            if days_signal_persists >= 3:
                                 helper_buy.append(np.nan)
-                                helper_sell.append(np.nan)
-                                trend.append("hold")
+                                helper_sell.append(stock["close"][day])
+                                trend.append("sell")
                             else:
                                 helper_sell.append(np.nan)
                                 helper_buy.append(np.nan)
@@ -420,16 +421,16 @@ def add_buy_and_sell_macd(stocks):
                     elif stock["MACD"][day] > stock["MACD_signal_line"][day]:                               
                         if flag == 0:
                             days_signal_persists = 0
-                            helper_buy.append(stock["close"][day])
+                            helper_buy.append(np.nan)
                             helper_sell.append(np.nan)
                             flag = 1
-                            trend.append("buy")
+                            trend.append("hold")
                         else:
                             days_signal_persists+=1
-                            if days_signal_persists >= 1 and days_signal_persists < 5:
-                                helper_buy.append(np.nan)
+                            if days_signal_persists >= 3:
+                                helper_buy.append(stock["close"][day])
                                 helper_sell.append(np.nan)
-                                trend.append("hold")
+                                trend.append("buy")
                             else:
                                 helper_sell.append(np.nan)
                                 helper_buy.append(np.nan)
@@ -456,7 +457,7 @@ def print_macd(stocks, names):
         counter+=1
 
 
-# In[26]:
+# In[21]:
 
 
 # EMA EMA
@@ -482,16 +483,16 @@ def add_buy_and_sell_ema(stocks):
                 helper_sell.append(np.nan)
                 trend.append("hold")
             else:    
-                if stock["EMA"][day] >= stock["close"][day]:
+                if stock["EMA"][day] <= stock["close"][day]:
                     if flag == 0:
                         days_signal_persists = 0
-                        helper_buy.append(stock["close"][day])
+                        helper_buy.append(np.nan)
                         helper_sell.append(np.nan)
-                        trend.append("buy")
+                        trend.append("hold")
                         flag = 1
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists <= 1:
+                        if days_signal_persists >= 1:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -499,16 +500,16 @@ def add_buy_and_sell_ema(stocks):
                             helper_sell.append(np.nan)
                             helper_buy.append(np.nan)
                             trend.append("hold")        
-                elif stock["EMA"][day] < stock["close"][day]:
+                elif stock["EMA"][day] > stock["close"][day]:
                     if flag == 1:
                         days_signal_persists = 0
-                        helper_sell.append(stock["close"][day])
+                        helper_sell.append(np.nan)
                         helper_buy.append(np.nan)
-                        trend.append("sell")
+                        trend.append("hold")
                         flag = 0
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists <= 1:
+                        if days_signal_persists >= 1:
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -538,7 +539,7 @@ def print_ema(stocks, names):
         counter+=1
 
 
-# In[27]:
+# In[22]:
 
 
 # Stochastik StochasticKAndD
@@ -573,7 +574,7 @@ def add_buy_and_sell_stoch(stocks):
                         trend.append("hold")
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 1 and days_signal_persists <= 4:
+                        if days_signal_persists >= 2 and days_signal_persists < 7:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -590,7 +591,7 @@ def add_buy_and_sell_stoch(stocks):
                         flag = 0
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 1 and days_signal_persists <= 4:
+                        if days_signal_persists >= 2 and days_signal_persists < 7:
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -625,7 +626,7 @@ def print_stoch(stocks, names):
         counter+=1
 
 
-# In[28]:
+# In[23]:
 
 
 # OBV (on balance volume)
@@ -663,7 +664,7 @@ def add_buy_and_sell_obv(stocks):
         for day in range (length):
             if not np.isnan(stock["OBV_average"][day]) and not np.isnan(stock["OBV_average"][day-1]): 
                 # korridore hinzufügen etwa 10 % schewankung soll auf  hold fallen ( wenn volumen mehr als 5 % mehr ist dann erst buy, oder eben sell)
-                if stock["OBV"][day] >= stock["OBV_average"][day-1]:
+                if stock["OBV"][day] >= 1.05*stock["OBV_average"][day-1]:
                     if flag == 0:
                         days_signal_persists = 0
                         helper_buy.append(np.nan)
@@ -672,7 +673,7 @@ def add_buy_and_sell_obv(stocks):
                         trend.append("hold")
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 3 and days_signal_persists <= 5:
+                        if days_signal_persists >= 1:
                             helper_buy.append(stock["close"][day])
                             helper_sell.append(np.nan)
                             trend.append("buy")
@@ -680,7 +681,7 @@ def add_buy_and_sell_obv(stocks):
                             helper_sell.append(np.nan)
                             helper_buy.append(np.nan)
                             trend.append("hold")        
-                elif stock["OBV"][day] < stock["OBV_average"][day-1]:
+                elif stock["OBV"][day] < 0.95*stock["OBV_average"][day-1]:
                     if flag == 1:
                         days_signal_persists = 0
                         helper_sell.append(np.nan)
@@ -689,7 +690,7 @@ def add_buy_and_sell_obv(stocks):
                         flag = 0
                     else:
                         days_signal_persists+=1
-                        if days_signal_persists >= 3 and days_signal_persists <= 5:
+                        if days_signal_persists >= 1:
                             helper_buy.append(np.nan)
                             helper_sell.append(stock["close"][day])
                             trend.append("sell")
@@ -728,7 +729,7 @@ def print_obv(stocks, names):
         counter+=1
 
 
-# In[29]:
+# In[24]:
 
 
 # Bolliunger bands
@@ -813,12 +814,15 @@ def print_bb(stocks, names):
         counter+=1
 
 
-# In[35]:
+# In[25]:
 
 
 # create chart for displaying all indicators
-def weighted_merge(stocks, names):
+def combine_indicators(permutation, stocks, names):
+    counter=0
     for stock in stocks:
+        print("Aktie "+str(counter))
+        counter+=1
         # define all indicators and according values
         data=[stock["macd_trend"], stock["rsi_trend"], stock["sma_trend"], stock["ema_trend"], stock["stoch_trend"], stock["obv_trend"], stock["bb_trend"], stock["wr_trend"], stock["sma_ema_trend"]]
         headers=["macd_trend", "rsi_trend", "sma_trend", "ema_trend", "stoch_trend", "obv_trend", "bb_trend", "wr_trend", "sma_ema_trend"]
@@ -837,161 +841,16 @@ def weighted_merge(stocks, names):
             # for every day get indicator recommandation
             macd = helper.iloc[x]["macd_trend"]
             rsi = helper.iloc[x]["rsi_trend"]
+            wr =  helper.iloc[x]["wr_trend"]
+            bb = helper.iloc[x]["bb_trend"]
+            stoch = helper.iloc[x]["stoch_trend"]
             sma = helper.iloc[x]["sma_trend"]
             ema = helper.iloc[x]["ema_trend"]
-            stoch = helper.iloc[x]["stoch_trend"]
-            obv = helper.iloc[x]["obv_trend"]
-            bb = helper.iloc[x]["bb_trend"]
-            wr =  helper.iloc[x]["wr_trend"]
             sma_ema = helper.iloc[x]["sma_ema_trend"]
-            indicators=[macd, rsi, sma, ema, stoch, obv, bb, wr, sma_ema]
-            decision = decide_weighted(indicators)
-            weighted_signal.append(decision[0])
-            decision = decision[1]
-            if decision == "buy_weak":
-                buy_weak.append(stock.iloc[x]["close"])
-                buy_middle.append(np.nan)
-                buy_strong.append(np.nan)
-                sell_weak.append(np.nan)
-                sell_middle.append(np.nan)
-                sell_strong.append(np.nan)
-                hold.append(np.nan)
-            if decision == "buy_middle":
-                buy_middle.append(stock.iloc[x]["close"])
-                buy_weak.append(np.nan)
-                buy_strong.append(np.nan)
-                sell_weak.append(np.nan)
-                sell_middle.append(np.nan)
-                sell_strong.append(np.nan)
-                hold.append(np.nan)
-            if decision == "buy_strong":
-                buy_strong.append(stock.iloc[x]["close"])
-                buy_middle.append(np.nan)
-                buy_weak.append(np.nan)
-                sell_weak.append(np.nan)
-                sell_middle.append(np.nan)
-                sell_strong.append(np.nan)
-                hold.append(np.nan)
-            if decision == "sell_weak":
-                sell_weak.append(stock.iloc[x]["close"])
-                buy_middle.append(np.nan)
-                buy_weak.append(np.nan)
-                buy_strong.append(np.nan)
-                sell_middle.append(np.nan)
-                sell_strong.append(np.nan)
-                hold.append(np.nan)
-            if decision == "sell_middle":
-                sell_middle.append(stock.iloc[x]["close"])
-                buy_middle.append(np.nan)
-                buy_weak.append(np.nan)
-                sell_weak.append(np.nan)
-                buy_strong.append(np.nan)
-                sell_strong.append(np.nan)
-                hold.append(np.nan)
-            if decision == "sell_strong":
-                sell_strong.append(stock.iloc[x]["close"])
-                buy_middle.append(np.nan)
-                buy_weak.append(np.nan)
-                sell_weak.append(np.nan)
-                sell_middle.append(np.nan)
-                buy_strong.append(np.nan)
-                hold.append(np.nan)
-            if decision == "hold":
-                buy_middle.append(np.nan)
-                buy_weak.append(np.nan)
-                sell_weak.append(np.nan)
-                sell_middle.append(np.nan)
-                sell_strong.append(np.nan)
-                buy_strong.append(np.nan)
-                hold.append(stock.iloc[x]["close"])
-        stock["buy_weak"] = buy_weak
-        stock["buy_middle"] = buy_middle
-        stock["buy_strong"] = buy_strong
-        stock["sell_weak"] = sell_weak
-        stock["sell_middle"] =sell_middle
-        stock["hold"] = hold
-        stock["sell_strong"] = sell_strong
-        stock["weighted_signal"] = weighted_signal
-    #print_all(stocks,names)
-            
-def decide_weighted(indicators):
-    rating = 0
-    indicator_count = 0
-    for indicator in indicators:
-        if indicator == "buy":
-            rating+=1
-        if indicator == "sell":
-            rating-=1
-        if indicator == "hold":
-            rating=rating  
-        indicator_count+=1
-    if rating >= 3 and rating < 4: #>= 3 and rating <= 5:
-        return rating,"buy_weak"
-    elif rating <=5 and rating >= 4: #>= 6 and rating <= 8:
-        return rating,"buy_middle"
-    elif rating > 5:
-        return rating,"buy_strong"
-    elif rating <= -3 and rating >-4: #<= -3 and rating >= -5:
-        return rating,"sell_weak"
-    elif rating <= -4 and rating >= -5: #<= -6 and rating >= -8:
-        return rating,"sell_middle"
-    elif rating < -5:
-        return rating,"sell_strong"
-    else:
-        return rating,"hold"
-    
-def print_all(stocks, names):
-    counter = 0
-    for stock in stocks:
-        fig, ax = plt.subplots(figsize=(15,10))  # Create a figure and an axes.
-        ax.plot(stock["close"], label="close")  # Plot some data on the axes.
-        ax.plot(stock["buy_weak"], label="buy_weak", marker=10, color="y")
-        ax.plot(stock["sell_weak"], label="sell_weak", marker=11, color="m")
-        ax.plot(stock["buy_middle"], label="buy_middle", marker=10, color="c")
-        ax.plot(stock["sell_middle"], label="sell_middle", marker=11, color="r")
-        ax.plot(stock["buy_strong"], label="buy_strong", marker=10, color="g")
-        ax.plot(stock["sell_strong"], label="sell_strong", marker=11, color="k")
-        #ax.plot(stock["hold"], label="hold", marker=9, color="y")
-        ax.set_xlabel('Time')  # Add an x-label to the axes.
-        ax.set_ylabel('Value')  # Add a y-label to the axes.
-        ax.set_title("All Indicators of "+names[counter])  # Add a title to the axes.
-        ax.legend()  # Add a legend.
-        counter+=1    
-
-
-# In[36]:
-
-
-# create chart for displaying all indicators
-def weighted_merge_perm(permutation, stocks, names):
-    for stock in stocks:
-        # define all indicators and according values
-        data=[stock["macd_trend"], stock["rsi_trend"], stock["sma_trend"], stock["ema_trend"], stock["stoch_trend"], stock["obv_trend"], stock["bb_trend"], stock["wr_trend"], stock["sma_ema_trend"]]
-        headers=["macd_trend", "rsi_trend", "sma_trend", "ema_trend", "stoch_trend", "obv_trend", "bb_trend", "wr_trend", "sma_ema_trend"]
-        # ctreate dataframe with only the indicators and recommandations in it
-        helper = pd.concat(data, axis=1, keys=headers)
-        length = len(data[0])
-        weighted_signal = []
-        buy_weak = []
-        buy_middle = []
-        buy_strong = []
-        hold = []
-        sell_weak = []
-        sell_middle = []
-        sell_strong = []
-        for x in range(0,length):
-            # for every day get indicator recommandation
-            macd = helper.iloc[x]["macd_trend"]
-            rsi = helper.iloc[x]["rsi_trend"]
-            sma = helper.iloc[x]["sma_trend"]
-            ema = helper.iloc[x]["ema_trend"]
-            stoch = helper.iloc[x]["stoch_trend"]
             obv = helper.iloc[x]["obv_trend"]
-            bb = helper.iloc[x]["bb_trend"]
-            wr =  helper.iloc[x]["wr_trend"]
-            sma_ema = helper.iloc[x]["sma_ema_trend"]
-            indicators=[macd, rsi, sma, ema, stoch, obv, bb, wr, sma_ema]
-            decision = decide_perm(permutation, indicators)
+            signal_indicators=[rsi, wr, bb, stoch]
+            trend_indicators=[macd, obv, sma, ema, sma_ema]
+            decision = decide_perm(permutation, signal_indicators, trend_indicators)
             weighted_signal.append(decision[0])
             decision = decision[1]
             if decision == "buy_weak":
@@ -1059,40 +918,121 @@ def weighted_merge_perm(permutation, stocks, names):
         stock["sell_strong"] = sell_strong
         stock["weighted_signal"] = weighted_signal
     print("done")
-    #print_all(stocks,names)
+    #print_all_perm(stocks,names)
             
-def decide_perm(permutation, indicators):
-    rating = 0
+def decide_perm(permutation, signal_indicators, trend_indicators):
+    #trend_summe=sum(trend_indicators)
+    #signal_summe=sum(signal_indicators)
+    trend_rating = 0
+    signal_rating = 0
     indicator_count = 0
-    for x in range(len(permutation)):
-        if indicators[x] == "buy":
-            rating+=permutation[x]
-        if indicators[x] == "sell":
-            rating-=permutation[x]
-        if indicators[x] == "hold":
-            rating=rating
-    if rating >= 3 and rating < 4: #>= 3 and rating <= 5:
-        return rating,"buy_weak"
-    elif rating <=5 and rating >= 4: #>= 6 and rating <= 8:
-        return rating,"buy_middle"
-    elif rating > 5:
-        return rating,"buy_strong"
-    elif rating <= -3 and rating >-4: #<= -3 and rating >= -5:
-        return rating,"sell_weak"
-    elif rating <= -4 and rating >= -5: #<= -6 and rating >= -8:
-        return rating,"sell_middle"
-    elif rating < -5:
-        return rating,"sell_strong"
-    else:
-        return rating,"hold"
+    length = len(permutation)
+    indicators=trend_indicators+signal_indicators
     
-def print_all(stocks, names):
+    signal_summe=sum(permutation[len(trend_indicators):])
+    trend_summe=sum(permutation[:len(trend_indicators)])   
+    
+    
+    # trend indicators
+    for x in range(len(trend_indicators)):
+        if indicators[x] == "buy":
+            trend_rating+=permutation[x]
+        if indicators[x] == "sell":
+            trend_rating-=permutation[x]
+        if indicators[x] == "hold":
+            trend_rating=trend_rating            
+    # signal indicators 
+    for x in range(len(trend_indicators),len(indicators)):
+        if indicators[x] == "buy":
+            signal_rating+=permutation[x]
+        if indicators[x] == "sell":
+            signal_rating-=permutation[x]
+        if indicators[x] == "hold":
+            signal_rating=signal_rating            
+    
+    # sell if uptrend
+    if trend_rating >= round(0.5*trend_summe):
+        if signal_rating <= round(0.2*-signal_summe) and signal_rating > round(0.4*-signal_summe):
+            return signal_rating, "sell_weak"
+        elif signal_rating <= round(0.4*-signal_summe) and signal_rating > round(0.6*-signal_summe):
+            return signal_rating, "sell_middle"
+        elif signal_rating <= round(0.6*-signal_summe):
+            return signal_rating, "sell_strong"
+    # buy if down trend 
+    elif trend_rating <= round(0.5*-trend_summe):
+        if signal_rating >= round(0.2*signal_summe) and signal_rating < round(0.4*signal_summe):
+            return signal_rating, "buy_weak"
+        elif signal_rating >= round(0.4*signal_summe) and signal_rating < round(0.6*signal_summe):
+            return signal_rating, "buy_middle"
+        elif signal_rating >= round(0.6*signal_summe):
+            return signal_rating, "buy_strong"
+    
+    return signal_rating,"hold"
+
+def print_indicator(trade, indicators, length):
+    print(trade)
+    for x in range(length):
+        if x == 0:
+            if indicators[x] == "buy":
+                print("MACD buy")
+            elif indicators[x] == "sell":
+                print("MACD sell")    
+        elif x == 1:
+            if indicators[x] == "buy":
+                print("RSI buy")
+            elif indicators[x] == "sell":
+                print("RSI sell")
+  
+        elif x == 2:
+            if indicators[x] == "buy":
+                print("SMA buy")
+            elif indicators[x] == "sell":
+                print("SMA sell") 
+
+        elif x == 3:
+            if indicators[x] == "buy":
+                print("EMA buy")
+            elif indicators[x] == "sell":
+                print("EMA sell")   
+
+        elif x == 4:
+            if indicators[x] == "buy":
+                print("STOCH buy")
+            elif indicators[x] == "sell":
+                print("STOCH sell")
+ 
+        elif x == 5:
+            if indicators[x] == "buy":
+                print("OBV buy")
+            elif indicators[x] == "sell":
+                print("OBV sell")
+
+        elif x == 6:
+            if indicators[x] == "buy":
+                print("BB buy")
+            elif indicators[x] == "sell":
+                print("BB sell") 
+
+        elif x == 7:
+            if indicators[x] == "buy":
+                print("WR buy")
+            elif indicators[x] == "sell":
+                print("WR sell")   
+ 
+        elif x == 8:
+            if indicators[x] == "buy":
+                print("SMA-EMA buy")
+            elif indicators[x] == "sell":
+                print("SMA-EMA sell")     
+            
+    
+def print_all_perm(stocks, names):
     counter = 0
     for stock in stocks:
         fig, ax = plt.subplots(figsize=(15,10))  # Create a figure and an axes.
         ax.plot(stock["close"], label="close")  # Plot some data on the axes.
-        ax.plot(stock["buy_weak"], label="buy_weak", marker=10, color="y")
-        ax.plot(stock["sell_weak"], label="sell_weak", marker=11, color="m")
+        #ax.plot(stock["buy_weak"], label="buy_weak", marker=10, color="y")
+        #ax.plot(stock["sell_weak"], label="sell_weak", marker=11, color="m")
         ax.plot(stock["buy_middle"], label="buy_middle", marker=10, color="c")
         ax.plot(stock["sell_middle"], label="sell_middle", marker=11, color="r")
         ax.plot(stock["buy_strong"], label="buy_strong", marker=10, color="g")
@@ -1105,18 +1045,18 @@ def print_all(stocks, names):
         counter+=1    
 
 
-# In[37]:
+# In[26]:
 
 
-def initialize_stocks(days):
-    stock_array=get_stocks_from_portfolio("alles")
+def initialize_stocks(portfolio,days):
+    stock_array=get_stocks_from_portfolio(portfolio)
     stocks=[]
     names=[]
     for stock in stock_array:
         name = stock[0]
         identifier = stock[1]
         ticker= yf.Ticker(identifier)
-        hist = ticker.history(days) #start = "2017-01-01", end="2021-03-15")
+        hist = ticker.history(days)
         hist = hist.rename(columns={"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"})
         stocks.append(hist)
         names.append(name)
@@ -1129,11 +1069,10 @@ def initialize_stocks(days):
     get_bb(stocks, names, 21)
     get_wr(stocks, names, 21)
     get_sma_ema(stocks, names,14)
-    weighted_merge(stocks, names)
     return stocks, names
 
 
-# In[38]:
+# In[27]:
 
 
 def get_stocks(portfolio, all_stocks, all_names):
@@ -1149,63 +1088,88 @@ def get_stocks(portfolio, all_stocks, all_names):
                 stocks.append(all_stocks[count])
     return stocks, names      
 
-def init(portfolio, stocks, names):
+def get_portfolio_data(portfolio, stocks, names):
     return get_stocks(portfolio, stocks, names)
 
 
-# In[42]:
+# In[28]:
 
 
-import time 
-cleanup()
-stocks, names= initialize_stocks("200d")
-max_stocks, max_names = init("alles", stocks, names)
+def calculate_day(portfolio):
+    stocks, names= initialize_stocks(portfolio, "50d")
+    max_stocks, max_names = get_portfolio_data(portfolio, stocks, names)
+    permutation = [1, 1, 1, 1, 2, 1, 3, 2, 1]
+    summe = sum(permutation[5:])
+    combine_indicators(permutation, max_stocks, max_names)
+    #return max_stocks
+    buy_suggestions, sell_suggestions, portfolio_value, Startkapital = evaluate_day(summe,portfolio, max_stocks, max_names)
+    print(buy_suggestions)
+    print(sell_suggestions)
+    print(portfolio_value)
+    print(Startkapital)
+    # mail stuff
 
-permutations=[]
-for a in range(0,2):
-    for b in range(0,2):
-        for c in range(0,2):
-            for d in range(0,2):
-                for e in range(0,2):
-                    for f in range(0,2):
-                        for g in range(0,2):
-                            for h in range(0,2):
-                                for i in range(0,2):
-                                    permutations.append([a,b,c,d,e,f,g,h,i])
-                                    #permutations.append([i,h,g,f,e,d,b,c,a])
 
-start = time.time()
-list = []
-max_gesamt=0
+# In[32]:
 
-for perm in permutations:
-    if sum(perm) <= 2:
-        print("continue")
-        continue
-    summe = sum(perm)
-    weighted_merge_perm(perm, max_stocks, max_names)
-    gesamt = evaluate_model_weighted_perm(summe,"alles", max_stocks, max_names)
-    list.append([perm,gesamt])
-    end = time.time()
-    print(end - start)
-    time.sleep(1.5)
-    cleanup()
-    time.sleep(1.5)
-    if gesamt > max_gesamt:
-        print("Permutation "+str(perm)+" ist besser ------ "+str(gesamt))
-        max_gesamt=gesamt
-        
-                
-test3=list
-len(test3)
-test3=sorted(test3,key=itemgetter(1))
-for x in test3[-15:]:
-    print(x)
-    
-print("####################################")
-for y in test3[:15]:
-    print(y)
-#print(test2[-10:-1])
+
+#calculate_day("Max Portfolio")
+
+
+# In[1]:
+
+
+#import time 
+#cleanup()
+#stocks, names= initialize_stocks("200d")
+##max_stocks, max_names = init("Test-Set2", stocks, names)
+
+#permutations=[]
+#for a in range(1,3):
+#    for b in range(1,3):
+#        for c in range(1,3):
+#            for d in range(1,3):
+#                for e in range(1,3):
+#                    for f in range(1,3):
+#                        for g in range(1,3):
+#                            for h in range(1,3):
+#                                for i in range(1,3):
+#                                    #permutations.append([a,b,c,d,e,f,g,h,i])
+#                                    permutations.append([i,h,g,f,e,d,b,c,a])
+#                                    
+##permutations=[[1, 1, 2, 2, 2, 1, 2, 1, 1],[2, 1, 2, 2, 2, 1, 2, 1, 1],[1, 1, 2, 2, 2, 2, 1, 2, 1],[1, 1, 1, 2, 2, 2, 1, 2, 1],[1, 1, 1, 1, 1, 1, 2, 2, 1],[2, 2, 2, 2, 1, 1, 1, 2, 1],[1, 1, 1, 1, 1, 1, 1, 1, 1],[1, 1, 1, 2, 2, 1, 1, 2, 1],[1, 1, 1, 1, 1, 1, 2, 1, 1],[1, 1, 1, 1, 1, 1, 2, 1, 2],[2, 2, 1, 2, 2, 1, 1, 2, 1],[1, 2, 2, 2, 2, 2, 1, 2, 2],[2, 2, 2, 2, 2, 1, 2, 1, 1],[1, 2, 1, 2, 1, 1, 1, 2, 1],[1, 2, 2, 2, 1, 1, 1, 1, 1],[2, 1, 2, 2, 2, 1, 2, 2, 1],[1, 1, 1, 2, 2, 2, 1, 1, 1],[1, 2, 2, 2, 2, 1, 2, 2, 1],[2, 1, 1, 2, 1, 1, 1, 2, 1],[1, 2, 2, 2, 1, 1, 2, 2, 1],[2, 1, 1, 1, 2, 2, 1, 1, 2],[1, 1, 1, 1, 1, 1, 1, 2, 2],[2, 1, 1, 1, 2, 1, 2, 2, 1],[2, 1, 1, 1, 2, 2, 1, 1, 1],[2, 1, 1, 1, 2, 1, 2, 1, 2],[2, 1, 1, 1, 2, 1, 2, 2, 2],[0, 0, 1, 1, 0, 0, 0, 1, 1],[0, 0, 1, 1, 1, 0, 0, 0, 1],[0, 1, 1, 0, 0, 0, 0, 0, 1],[0, 0, 1, 0, 1, 0, 0, 0, 1],[0, 0, 1, 0, 0, 0, 0, 1, 1],[0, 0, 1, 0, 0, 0, 1, 0, 1],[0, 0, 1, 1, 0, 0, 1, 0, 0],[1, 0, 0, 0, 0, 1, 0, 0, 1],[0, 0, 1, 1, 0, 0, 0, 0, 1],[0, 1, 1, 1, 0, 0, 0, 0, 0],[0, 0, 0, 1, 0, 1, 1, 1, 1],[0, 0, 0, 0, 0, 1, 1, 1, 1],[0, 0, 1, 1, 0, 0, 1, 0, 1],[1, 1, 0, 0, 0, 0, 0, 0, 1],[1, 1, 0, 1, 0, 0, 0, 0, 0],[0, 1, 0, 1, 1, 0, 0, 1, 1],[0, 1, 0, 1, 0, 0, 0, 1, 0],[1, 1, 0, 1, 1, 0, 0, 1, 1],[1, 1, 1, 1, 0, 1, 1, 0, 0],[1, 0, 0, 0, 0, 0, 1, 1, 0],[1, 0, 1, 1, 0, 0, 0, 1, 0],[1, 0, 1, 1, 1, 1, 0, 1, 0],[1, 0, 0, 1, 0, 1, 1, 0, 0],[0, 1, 0, 1, 0, 0, 1, 0, 0],[0, 1, 1, 0, 1, 0, 0, 1, 0],[1, 0, 0, 1, 1, 1, 0, 0, 0],[0, 1, 0, 0, 0, 0, 1, 1, 0],[1, 1, 1, 1, 0, 0, 1, 1, 1],[1, 0, 1, 1, 0, 0, 1, 1, 1],[1, 0, 1, 1, 0, 1, 1, 0, 0],[1, 0, 0, 0, 1, 1, 0, 1, 0],[0, 0, 0, 1, 0, 1, 1, 1, 1],[0, 0, 1, 1, 1, 1, 0, 0, 0],[0, 0, 0, 0, 1, 0, 0, 1, 1],[0, 1, 1, 1, 1, 1, 0, 0, 0],[1, 0, 1, 0, 0, 0, 0, 0, 1],[0, 1, 1, 0, 1, 1, 0, 1, 0],[0, 1, 0, 1, 1, 1, 1, 1, 1],[0, 0, 0, 1, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 1, 1],[0, 0, 0, 1, 1, 1, 1, 0, 0],[0, 1, 0, 0, 1, 1, 0, 1, 1],[0, 1, 1, 0, 0, 1, 0, 1, 0],[0, 1, 1, 0, 1, 1, 0, 0, 0],[0, 0, 0, 0, 1, 1, 0, 1, 1],[0, 0, 1, 1, 0, 0, 1, 0, 1],[0, 0, 1, 1, 0, 0, 0, 0, 1],[0, 1, 1, 1, 0, 0, 0, 0, 1],[1, 1, 1, 1, 0, 0, 0, 0, 1],[1, 0, 1, 1, 0, 0, 1, 0, 1],[0, 0, 0, 0, 0, 1, 0, 1, 1],[0, 1, 0, 0, 0, 1, 0, 0, 1],[0, 1, 1, 1, 0, 0, 1, 0, 1],[0, 0, 0, 0, 1, 1, 0, 0, 1],[1, 1, 1, 1, 0, 0, 1, 0, 1],[0, 0, 0, 0, 0, 1, 1, 0, 1],[1, 1, 1, 1, 1, 1, 1, 1, 0],[1, 1, 1, 1, 0, 1, 1, 0, 1],[0, 0, 1, 1, 0, 0, 0, 1, 1],[1, 0, 1, 1, 0, 1, 1, 0, 0],[0, 0, 1, 1, 0, 1, 1, 0, 1],[0, 0, 1, 1, 0, 1, 0, 1, 1],[0, 1, 1, 1, 0, 1, 0, 0, 1],[1, 0, 0, 0, 0, 1, 1, 0, 0],[0, 0, 1, 1, 1, 1, 0, 0, 1],[1, 1, 0, 0, 0, 1, 1, 0, 0],[1, 0, 1, 1, 0, 0, 0, 0, 1],[0, 0, 1, 1, 0, 0, 1, 0, 1],[0, 0, 1, 1, 0, 1, 0, 0, 1],[0, 0, 0, 0, 0, 1, 1, 1, 0],[0, 0, 1, 1, 1, 0, 0, 0, 1],[0, 0, 1, 1, 0, 0, 0, 1, 1],[0, 0, 0, 0, 1, 1, 1, 0, 0],[0, 1, 0, 0, 0, 1, 1, 0, 0],[0, 0, 1, 1, 0, 0, 0, 0, 1],[0, 0, 1, 0, 0, 0, 1, 1, 0],[0, 1, 1, 1, 1, 1, 0, 1, 0],[0, 1, 0, 0, 1, 0, 0, 0, 1],[0, 1, 0, 0, 0, 1, 0, 1, 0],[1, 1, 0, 0, 0, 0, 0, 1, 0],[0, 1, 0, 1, 1, 0, 0, 0, 0],[0, 1, 0, 0, 1, 1, 0, 0, 0],[0, 0, 1, 1, 0, 1, 0, 0, 0],[1, 1, 1, 1, 1, 1, 0, 1, 0],[1, 1, 0, 1, 0, 0, 0, 0, 0],[0, 1, 0, 0, 0, 0, 0, 1, 1],[1, 0, 1, 1, 0, 0, 0, 0, 0],[0, 0, 0, 1, 1, 0, 1, 0, 1],[1, 0, 1, 1, 1, 1, 0, 1, 0],[0, 1, 1, 0, 0, 0, 0, 1, 0]]
+##permutations = [[2, 1, 1, 1, 2, 1, 2, 2, 2],[2, 1, 1, 1, 2, 1, 2, 1, 2]]
+#permutations=[[1, 1, 1, 1, 1, 1, 1, 1, 1],[1, 1, 1, 1, 1, 1, 2, 3, 1]]
+#start = time.time()
+#list = []
+##max_gesamt=0##
+
+#for perm in permutations:
+#    if sum(perm) <= 2:
+#        print("continue")
+#        continue
+#    # only use the last 4 indicators (signal indicators)
+#    summe = sum(perm[5:])
+#    weighted_merge_perm(perm, max_stocks, max_names)
+#    gesamt = evaluate_model_weighted_perm(summe,"Test-Set2", max_stocks, max_names)
+#    list.append([perm,gesamt])
+#    end = time.time()
+#    print(end - start)
+#    time.sleep(1.5)
+#    cleanup()
+ #   time.sleep(1.5)
+#    if gesamt > max_gesamt:
+#        print("Permutation "+str(perm)+" ist besser ------ "+str(gesamt))
+#        max_gesamt=gesamt
+#        
+#                
+#test3=list
+#len(test3)
+#test3=sorted(test3,key=itemgetter(1))
+#for x in test3:
+#    print(x)
+#    
+#print("####################################"#)#
 
 
 # In[ ]:

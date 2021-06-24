@@ -21,10 +21,12 @@
   ansible.builtin.git:
     repo: https://github.com/maldwg/shares.git
     dest: /opt/shares
+    force: true
     version: feature/add-permutations
+  become: yes
 
 - name: install neccessary pip modules
-  command: pip3 install --user {{ item.name }}
+  command: pip3 install --user {{ item }}
   with_items:
     -  "pandas"
     -  "yfinance"
@@ -36,6 +38,6 @@
   ansible.builtin.cron:
     name: "start shares programm on reboot"
     special_time: reboot
-    job: "python3 /opt/shares/main.py"
+    job: "python3 /opt/shares/main.py >> /opt/shares/shares.log"
     user: "shares"  
     cron_file: /etc/crontab

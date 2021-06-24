@@ -2,9 +2,4 @@ package_list:
   - python3-pip
   - git
 
-pip_modules:
-  -  pandas
-  -  yfinance
-  -  matplotlib
-  -  technical_indicators_lib
 

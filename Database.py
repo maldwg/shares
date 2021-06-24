@@ -14,7 +14,7 @@ import sqlite3
 #helper methods
 def init_db_connection():
     # init db connection
-    conn = sqlite3.connect("./shares.db")
+    conn = sqlite3.connect("/opt/shares/shares.db")
     sql = conn.cursor()   
     return conn, sql
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import pandas as pd
@@ -18,7 +18,7 @@ from Shares import *
 from operator import itemgetter
 
 
-# In[2]:
+# In[3]:
 
 
 # receive mails and trade
@@ -33,15 +33,17 @@ if portfolio_trades:
             stock=buy[0]
             price=buy[1]
             ammount=buy[2]
+            costs=buy[3]
             print(type(price))
             print(type(stock))
             print(type(ammount))
-            buy_stock(portfolio, stock, price, ammount)
+            buy_stock(portfolio, stock, price, ammount, costs)
         for sell in trades[1]["sell"]:
             stock=sell[0]
             price=sell[1]
             ammount=sell[2]
-            sell_stock(portfolio, stock, price, ammount)
+            costs=sell[3]
+            sell_stock(portfolio, stock, price, ammount, costs)
 
 # get all portfolios
 all_portfolio_names = get_all_portfolios()
@@ -88,4 +90,10 @@ for portfolio in all_portfolio_names:
         send_email_buy(mail, kapital, name_anzahl_preis, buy_suggestions, Startkapital, portfolio_value)
     
     
+
+
+# In[ ]:
+
+
+
 

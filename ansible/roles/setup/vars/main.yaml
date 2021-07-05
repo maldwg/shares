@@ -1,5 +1,8 @@
 package_list:
   - python3-pip
   - git
-
+  - gcc
+  - python3-devel
+  - mariadb
+  - mariadb-devel
 

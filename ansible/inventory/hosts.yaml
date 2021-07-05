@@ -2,5 +2,5 @@ all:
   children:
     aws:
       hosts:
-        18.192.181.209:
-          ansible_user: ec2-user
+        3.65.20.180:
+          ansible_user: root

@@ -268,25 +268,25 @@ Hier ihre aktuellen Aktienbestaende:
 def write_csv(aktien_preis_anzahl_empfehlung_list):
     with open('aktien.csv', mode='w') as csv_file:
         aktien_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        aktien_writer.writerow(['Aktie', 'Wert', 'Anzahl'])
+        aktien_writer.writerow(['Aktie', 'Anzahl', 'Wert', 'Zusatzkosten'])
         for aktie in aktien_preis_anzahl_empfehlung_list:
-            aktien_writer.writerow([aktie[0], '', ''])
+            aktien_writer.writerow([aktie[0], aktie[1], aktie[2], '1.0'])
         
 
 
-# In[46]:
+# In[1]:
 
 
 def read_csv(filepath):
-    aktien_preis_anzahl_list= []
+    aktien_anzahl_preis_zuatzkosten= []
     with open(filepath) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
             if line_count > 0 and row != []:
-                aktien_preis_anzahl_list.append(row)
+                aktien_anzahl_preis_zuatzkosten.append(row)
             line_count += 1
-    return aktien_preis_anzahl_list
+    return aktien_anzahl_preis_zuatzkosten
     
 
 

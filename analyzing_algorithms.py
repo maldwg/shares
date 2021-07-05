@@ -188,7 +188,7 @@ def summary(stocks, portfolio, performance):
         counter+=1
 
 
-# In[3]:
+# In[1]:
 
 
 import pandas as pd
@@ -250,11 +250,14 @@ def buy (portfolio, Aktie, prozent_kapital, value, gesamt_wert, weight):
         anzahl = math.floor(kaufwert/value)
     else: 
         return
-    if momentaner_wert+anzahl*value > 0.2*gesamt_wert:
+    # maximal 5 % des Portfoliowerts pro trade
+    if anzahl*value > 0.05*gesamtwert:
+        anzahl = math.floor((gesamtwert*0.05)/value)
+    if momentaner_wert+anzahl*value > 0.15*gesamt_wert:
         # dann anpassen der anzahl, sodass maximal x % des portfolios daraus bestehen
         # ansonsten bei kursschwankungen auf einmal zu viele Aktien für Kapitalwert --> - Käufe
-        if momentane_anzahl < math.floor(gesamt_wert*0.2/value):
-            anzahl = math.floor(gesamt_wert*0.2/value)-momentane_anzahl
+        if momentane_anzahl < math.floor(gesamt_wert*0.15/value):
+            anzahl = math.floor(gesamt_wert*0.15/value)-momentane_anzahl
         else:
             return
     #buy_stock(portfolio, Aktie, value, anzahl)
@@ -283,7 +286,7 @@ def sell(number, portfolio, Aktie, prozent_aktie, value, weight):
         aktien_to_sell = 1
     gewinn=aktien_to_sell*(value-einstandskurs)
     # need to make more money than 5 euro with a trade -- otherwise to many small trades
-    if (value > 1.10*einstandskurs and gewinn > 7.5) or (value < 0.9*einstandskurs):
+    if (value > 1.10*einstandskurs and gewinn > 7.5) or (value < 0.9*einstandskurs) or(days > 90):
         #sell_stock(portfolio, Aktie, value, aktien_to_sell)
         return [Aktie, anzahl, value, weigth]
     else:

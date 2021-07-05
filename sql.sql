@@ -1,24 +1,22 @@
-drop table portfolio_shares;
-drop table user_portfolio;
-drop table portfolio;
-drop table user;
-drop table shares;
+drop database IF EXISTS shares;
+create database shares;
+use shares;
 
 create table shares(
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name varchar(30),
     identifier varchar(30)
 );
 
 create table portfolio(
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name varchar(30),
     aktuelles_kapital FLOAT,
     startkapital FLOAT
 );
 
 create table portfolio_shares(
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
     portfolio int,
     share int,
     anteile int,
@@ -30,16 +28,16 @@ create table portfolio_shares(
     foreign key (portfolio) references portfolio(id)
 );	
 
-create Table 'user'(
-id  INTEGER PRIMARY KEY AUTOINCREMENT,
+create Table user(
+id  INTEGER PRIMARY KEY AUTO_INCREMENT,
 firstname varchar(15),
 lastname varchar(15),
 mail varchar(50),
 UNIQUE(firstname, lastname)
 );
 
-create Table 'user_portfolio'(
-id  INTEGER PRIMARY KEY AUTOINCREMENT,
+create Table user_portfolio(
+id  INTEGER PRIMARY KEY AUTO_INCREMENT,
 portfolio INTEGER,
 user INTEGER,
 FOREIGN KEY (portfolio) references portfolio(id),
@@ -201,7 +199,7 @@ insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sol
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,6,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,7,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,8,0,0,100,100);
-insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,9,18,'3.56',100,100);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,9,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,10,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,11,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,12,0,0,100,100);
@@ -228,7 +226,7 @@ insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sol
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,31,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,32,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,33,0,0,100,100);
-insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,34,2,'70.36',100,100);
+insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,34,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,35,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,36,0,0,100,100);
 insert into portfolio_shares (portfolio, share, anteile, einstandskurs, last_sold, last_bought) values (2,37,0,0,100,100);

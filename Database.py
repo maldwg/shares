@@ -7,14 +7,14 @@
 import sqlite3
 
 
-# In[8]:
+# In[1]:
 
 
 ############################################
 #helper methods
 def init_db_connection():
     # init db connection
-    conn = sqlite3.connect("/opt/shares/shares.db")
+    conn = mariadb.connect(user="admin", password="admin123", host="shares-db.cx9nfvrihzq3.eu-central-1.rds.amazonaws.com", port=3306, database="shares")
     sql = conn.cursor()   
     return conn, sql
 
@@ -78,10 +78,11 @@ def get_portfolio_id(portfolio):
 
 # relevant methods to call
 
-def buy_stock(portfolio, stock, price, ammount): # portfolio and stock = names, price = closing value, ammount = ammount
+def buy_stock(portfolio, stock, price, ammount, costs): # portfolio and stock = names, price = closing value, ammount = ammount
     # ensure types are correct
     price=float(price)
     ammount=float(ammount)
+    costs=float(costs)
     conn,sql = init_db_connection()
     portfolio_id = get_portfolio_id(portfolio)
     stock_id = get_stock_id(stock)
@@ -92,16 +93,17 @@ def buy_stock(portfolio, stock, price, ammount): # portfolio and stock = names, 
     sql.execute("update portfolio_shares set anteile="+str(new_stocks)+", einstandskurs="+str(new_price)+", last_bought=0 where id ="+str(portfolio_stock_id))   
     conn.commit()
     kapital=get_kapital(portfolio)
-    new_kapital=kapital-price*ammount
+    new_kapital=kapital-costs-price*ammount
     sql.execute("update portfolio set aktuelles_kapital="+str(new_kapital)+" where id ="+str(portfolio_id))
     conn.commit()
     #print("Es wurden "+str(ammount)+" " + stock + " Aktien für "+str(price)+" € gekauft")
     close_db_connection(conn, sql)
     # ernidrige kapital!
     
-def sell_stock(portfolio, stock, price, ammount): # portfolio and stock = names, price = closing value, ammount = ammount
+def sell_stock(portfolio, stock, price, ammount, costs): # portfolio and stock = names, price = closing value, ammount = ammount
     price=float(price)
     ammount=float(ammount)
+    costs=float(costs)
     conn,sql = init_db_connection()
     portfolio_id = get_portfolio_id(portfolio)
     stock_id = get_stock_id(stock)
@@ -114,7 +116,7 @@ def sell_stock(portfolio, stock, price, ammount): # portfolio and stock = names,
     #print("Es wurden "+str(ammount)+" " + stock + " Aktien verkauft")
     #print("Gewinn: "+str(gewinn)+" €")
     kapital=get_kapital(portfolio)
-    sql.execute("update portfolio set aktuelles_kapital="+str(kapital+price*ammount)+" where id ="+str(portfolio_id))
+    sql.execute("update portfolio set aktuelles_kapital="+str(kapital-costs+price*ammount)+" where id ="+str(portfolio_id))
     conn.commit()
     if new_stocks==0:
         sql.execute("update portfolio_shares set einstandskurs=0 where id ="+str(portfolio_stock_id))   

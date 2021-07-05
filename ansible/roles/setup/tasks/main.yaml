@@ -32,6 +32,7 @@
     -  "yfinance"
     -  "matplotlib"
     -  "technical_indicators_lib"
+    -  "mariadb"
   become_user: "shares"
 
 - name: add execution of script to startup
@@ -39,5 +40,5 @@
     name: "start shares programm on reboot"
     special_time: reboot
     job: "python3 /opt/shares/main.py >> /opt/shares/shares.log"
-    user: "shares"  
+    user: "root"  
     cron_file: /etc/crontab

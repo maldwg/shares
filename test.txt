@@ -1,7 +1,0 @@
-[('Kraft-Heinz', 'KHNZ.DE'), ('Nike', 'NKE.DE'), ('Infineon', 'IFX.DE'), ('British American Tobaco', 'BMT.DE'), ('VW', 'VWAGY'), ('Daimler', 'DAI.DE'), ('General Electric', 'GEC.DE'), ('TUI', 'TUI1.DE'), ('Delta Airlines', 'OYC.DE'), ('Deutsche Telekom', 'DTE.DE'), ('Johnson and Johnson', 'JNJ.DE'), ('Biontech', '22UA.DE'), ('Danone', 'BSN.F'), ('Gartner', 'GGRA.F'), ('Caterpillar', 'CAT1.F'), ('Zalando', 'ZAL.DE'), ('Oracle', 'ORC.F'), ('Lanxess', 'LXS.DE'), ('K + S', 'SDF.DE'), ('Hornbach', 'HBH.DE'), ('Carrefour', 'CAR.F'), ('Kabel Deutschland', 'KD8.HM'), ('Enel', 'ENL.F'), ('JP Morgan', 'CMC.DE'), ('HSBC', 'HBC1.F'), ('RWE', 'RWE.DE'), ('Novartis', 'NOT.F'), ('Sanofi', 'SNW.F'), ('Intel', 'INL.F'), ('AT&T', 'SOBA.F'), ('Telefonica', 'TNE5.F'), ('Prosieben Sat1', 'PSM.DE'), ('Pepsico', 'PEP.DE')]
-done
-45.6751708984375
-Permutation [1, 1, 1, 1, 1, 1, 1, 1, 1] ist besser ------ 5861.979794263839
-[[1, 1, 1, 1, 1, 1, 1, 1, 1], 5861.979794263839]
-####################################
-[[1, 1, 1, 1, 1, 1, 1, 1, 1], 5861.979794263839]

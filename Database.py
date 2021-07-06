@@ -4,7 +4,7 @@
 # In[2]:
 
 
-import sqlite3
+import mariadb
 
 
 # In[1]:

@@ -251,8 +251,8 @@ def buy (portfolio, Aktie, prozent_kapital, value, gesamt_wert, weight):
     else: 
         return
     # maximal 5 % des Portfoliowerts pro trade
-    if anzahl*value > 0.05*gesamtwert:
-        anzahl = math.floor((gesamtwert*0.05)/value)
+    if anzahl*value > 0.05*gesamt_wert:
+        anzahl = math.floor((gesamt_wert*0.05)/value)
     if momentaner_wert+anzahl*value > 0.15*gesamt_wert:
         # dann anpassen der anzahl, sodass maximal x % des portfolios daraus bestehen
         # ansonsten bei kursschwankungen auf einmal zu viele Aktien für Kapitalwert --> - Käufe
@@ -288,7 +288,7 @@ def sell(number, portfolio, Aktie, prozent_aktie, value, weight):
     # need to make more money than 5 euro with a trade -- otherwise to many small trades
     if (value > 1.10*einstandskurs and gewinn > 7.5) or (value < 0.9*einstandskurs) or(days > 90):
         #sell_stock(portfolio, Aktie, value, aktien_to_sell)
-        return [Aktie, anzahl, value, weigth]
+        return [Aktie, anzahl, value, weight]
     else:
         return
         
